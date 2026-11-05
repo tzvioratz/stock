@@ -1,30 +1,108 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#152c4f"><title>Stockline · Inventory</title>
-<link rel="stylesheet" href="style.css"><script src="script.js" defer></script>
-</head>
-<body>
-<header class="topbar"><div class="brand"><span class="logo" aria-hidden="true">S</span><div>Stockline<small>Home & truck inventory</small></div></div><button id="refresh" class="secondary">Refresh inventory</button></header>
-<main>
-<section class="heading"><div><p class="eyebrow">YOUR INVENTORY, IN SYNC</p><h1>A place for every unit.</h1><p class="muted" id="syncStatus" role="status">Connecting to your inventory…</p></div><button id="add">+ Add item</button></section>
-<div id="notice" role="status" aria-live="polite" hidden></div>
-<section class="stats" aria-label="Inventory summary">
-<article><span>Total units</span><strong id="total">—</strong><small>Across both locations</small></article>
-<article><span>At home</span><strong id="home">—</strong><small>Home / Storage</small></article>
-<article><span>In truck</span><strong id="truck">—</strong><small>Ready for the road</small></article>
-<article><span>Low stock</span><strong id="low">—</strong><small>At or below reorder level</small></article>
-</section>
-<nav class="tabs" aria-label="Views"><button id="inventoryTab" aria-pressed="true">Inventory</button><button id="historyTab" aria-pressed="false">Activity history</button></nav>
-<section id="inventoryView" class="panel">
-<div class="toolbar"><label class="search">Search inventory<input id="search" type="search" placeholder="Product name, SKU, or notes…"></label><label>Filter<select id="filter"><option value="all">All locations</option><option value="home">Home / Storage</option><option value="truck">Truck</option><option value="low">Low stock</option><option value="out">Out of stock</option></select></label></div>
-<div class="listHeading"><h2>Products <span id="count" class="muted"></span></h2><span class="muted">Stock where you need it</span></div>
-<div id="products" aria-busy="true"></div>
-</section>
-<section id="historyView" class="panel" hidden><div class="toolbar"><label class="search">Search activity<input id="historySearch" type="search" placeholder="Product name or ID…"></label><button id="refreshHistory" class="secondary">Refresh history</button></div><p class="muted">Newest first · archived products remain in history</p><div id="transactions"></div><button id="moreHistory" class="secondary" hidden>Load older activity</button></section>
-<footer>Stockline · Two locations. One clear picture.</footer>
-</main>
-<dialog id="editor" aria-labelledby="dialogTitle"><form id="editorForm"><div class="dialogHeader"><h2 id="dialogTitle"></h2><button type="button" id="closeDialog" class="icon secondary" aria-label="Close dialog">×</button></div><div id="fields"></div><p id="formError" role="alert" class="error"></p><div class="dialogFooter"><button type="button" id="archive" class="danger" hidden>Archive item</button><button type="button" id="cancel" class="secondary">Cancel</button><button id="save" type="submit">Save changes</button></div></form></dialog>
-<dialog id="confirmation" aria-labelledby="confirmTitle"><h2 id="confirmTitle">Archive this item?</h2><p id="confirmText"></p><p class="muted">Its quantities leave the dashboard. Historical transactions stay available.</p><div class="dialogFooter"><button id="confirmCancel" class="secondary">Keep item</button><button id="confirmArchive" class="danger">Archive item</button></div></dialog>
-</body></html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#152c4f" />
+        <title>Stockline · Inventory</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="queue.css">
+        <script src="script.js" defer></script>
+        <script src="queue.js" defer></script>
+    </head>
+    <body>
+        <header class="topbar">
+            <div class="brand">
+                <span class="logo" aria-hidden="true">S</span>
+                <div>Stockline<small>Home & truck inventory</small></div>
+            </div>
+            <button id="refresh" class="secondary">Refresh inventory</button>
+        </header>
+        <main>
+            <section class="heading">
+                <div>
+                    <p class="eyebrow">YOUR INVENTORY, IN SYNC</p>
+                    <h1>A place for every unit.</h1>
+                    <p class="muted" id="syncStatus" role="status">Connecting to your inventory…</p>
+                </div>
+                <button id="add">+ Add item</button>
+            </section>
+            <div id="notice" role="status" aria-live="polite" hidden></div>
+            <section class="stats" aria-label="Inventory summary">
+                <article>
+                    <span>Total units</span><strong id="total">—</strong><small>Across both locations</small>
+                </article>
+                <article><span>At home</span><strong id="home">—</strong><small>Home / Storage</small></article>
+                <article><span>In truck</span><strong id="truck">—</strong><small>Ready for the road</small></article>
+                <article>
+                    <span>Low stock</span><strong id="low">—</strong><small>At or below reorder level</small>
+                </article>
+            </section>
+            <nav class="tabs" aria-label="Views">
+                <button id="inventoryTab" aria-pressed="true">Inventory</button
+                ><button id="historyTab" aria-pressed="false">Activity history</button>
+            </nav>
+            <section id="inventoryView" class="panel">
+                <div class="toolbar">
+                    <label class="search"
+                        >Search inventory<input
+                            id="search"
+                            type="search"
+                            placeholder="Product name, SKU, or notes…" /></label
+                    ><label
+                        >Filter<select id="filter">
+                            <option value="all">All locations</option>
+                            <option value="home">Home / Storage</option>
+                            <option value="truck">Truck</option>
+                            <option value="low">Low stock</option>
+                            <option value="out">Out of stock</option>
+                        </select></label
+                    >
+                </div>
+                <div class="listHeading">
+                    <h2>Products <span id="count" class="muted"></span></h2>
+                    <span class="muted">Stock where you need it</span>
+                </div>
+                <div id="products" aria-busy="true"></div>
+            </section>
+            <section id="historyView" class="panel" hidden>
+                <div class="toolbar">
+                    <label class="search"
+                        >Search activity<input
+                            id="historySearch"
+                            type="search"
+                            placeholder="Product name or ID…" /></label
+                    ><button id="refreshHistory" class="secondary">Refresh history</button>
+                </div>
+                <p class="muted">Newest first · archived products remain in history</p>
+                <div id="transactions"></div>
+                <button id="moreHistory" class="secondary" hidden>Load older activity</button>
+            </section>
+            <footer>Stockline · Two locations. One clear picture.</footer>
+        </main>
+        <dialog id="editor" aria-labelledby="dialogTitle">
+            <form id="editorForm">
+                <div class="dialogHeader">
+                    <h2 id="dialogTitle"></h2>
+                    <button type="button" id="closeDialog" class="icon secondary" aria-label="Close dialog">×</button>
+                </div>
+                <div id="fields"></div>
+                <p id="formError" role="alert" class="error"></p>
+                <div class="dialogFooter">
+                    <button type="button" id="archive" class="danger" hidden>Archive item</button
+                    ><button type="button" id="cancel" class="secondary">Cancel</button
+                    ><button id="save" type="submit">Save changes</button>
+                </div>
+            </form>
+        </dialog>
+        <dialog id="confirmation" aria-labelledby="confirmTitle">
+            <h2 id="confirmTitle">Archive this item?</h2>
+            <p id="confirmText"></p>
+            <p class="muted">Its quantities leave the dashboard. Historical transactions stay available.</p>
+            <div class="dialogFooter">
+                <button id="confirmCancel" class="secondary">Keep item</button
+                ><button id="confirmArchive" class="danger">Archive item</button>
+            </div>
+        </dialog>
+    </body>
+</html>
