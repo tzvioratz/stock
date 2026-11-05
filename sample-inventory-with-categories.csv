@@ -1,0 +1,5 @@
+ID,Name,SKU,HomeQty,TruckQty,ReorderLevel,Notes,Active,CreatedAt,UpdatedAt,Category
+demo-1,Drain Hose,HOSE-001,8,2,3,"Universal, 6 ft",TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z,Washing Machine
+demo-2,Drive Belt,BELT-001,1,0,2,Check model compatibility,TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z,Dryer
+demo-3,Inlet Valve,VALVE-001,0,0,1,Example product,TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z,Dishwasher
+demo-4,Duct Tape,TAPE-001,4,2,2,General supplies,TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z,General

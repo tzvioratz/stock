@@ -1,0 +1,8 @@
+/* Load after style.css and queue.css. */
+#inventoryView .toolbar{flex-wrap:wrap;align-items:flex-end;gap:12px}
+#inventoryView .toolbar .search{flex:1 1 280px;min-width:0}
+#inventoryView .toolbar>label:not(.search){flex:0 1 190px;min-width:150px}
+#inventoryView .toolbar>label:last-child{flex-basis:240px}
+.product-category{display:inline-block;margin:6px 0 4px;padding:3px 9px;border-radius:6px;background:#edf2fa;color:#4b6384;font-size:11px;font-weight:650;max-width:100%;overflow-wrap:anywhere}
+.category-help{display:block;font-size:11px;font-weight:400;color:#718198;margin-top:5px}
+@media(max-width:600px){#inventoryView .toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}#inventoryView .toolbar .search{grid-column:1/-1}#inventoryView .toolbar>label:not(.search){min-width:0}#inventoryView .toolbar>label:last-child{grid-column:1/-1}#inventoryView .toolbar select{font-size:13px}}
