@@ -1,0 +1,5 @@
+ID,Name,SKU,HomeQty,TruckQty,ReorderLevel,Notes,Active,CreatedAt,UpdatedAt
+5ba63832-e9c7-4f8c-bf2a-e633ecf47ad1,Extension Cord,CORD-001,8,3,3,"25 ft, outdoor rated",TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z
+6ba63832-e9c7-4f8c-bf2a-e633ecf47ad2,Work Gloves,GLOVE-001,12,2,4,Size L,TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z
+7ba63832-e9c7-4f8c-bf2a-e633ecf47ad3,Packing Tape,TAPE-001,0,1,2,"Clear tape, 2"" wide",TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z
+8ba63832-e9c7-4f8c-bf2a-e633ecf47ad4,Utility Blades,BLADE-001,0,0,2,"Count individual blades, not boxes",TRUE,2026-01-01T12:00:00.000Z,2026-01-01T12:00:00.000Z
