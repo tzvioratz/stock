@@ -102,15 +102,76 @@
       if(session===s&&dialog.open)get('barcodeRetry').disabled=false;
     }
   }
-  async function acceptScan(s,value){
-    await release(s);
-    if(session!==s||!dialog.open)return;
-    get('barcodeReader').hidden=true;get('barcodeValue').value=value;
-    get('barcodeResult').hidden=false;get('barcodeUse').hidden=false;
-    get('barcodeStatus').textContent='Barcode found. Review it, then use it as the SKU.';
-    get('barcodeRetry').textContent='Scan again';get('barcodeRetry').disabled=false;
-    get('barcodeUse').focus();
+async function acceptScan(s, value) {
+  const destination = targetInput;
+
+  // Stop scanning and release the camera first.
+  await release(s);
+
+  if (session !== s || !dialog.open) return;
+
+  const barcode = String(value).trim();
+
+  if (!barcode || barcode.length > 80) {
+    get('barcodeError').textContent =
+      'The barcode must contain between 1 and 80 characters.';
+    return;
   }
+
+  if (!destination?.isConnected) {
+    closeScanner();
+    return;
+  }
+
+  // SEARCH: insert the barcode and search immediately.
+  if (destination === $('search')) {
+    destination.value = barcode;
+
+    // Clear filters so they do not hide the scanned product.
+    $('filter').value = 'all';
+
+    const categoryFilter = document.getElementById('categoryFilter');
+    if (categoryFilter) {
+      categoryFilter.value = '';
+    }
+
+    destination.dispatchEvent(
+      new Event('input', { bubbles: true })
+    );
+
+    closeScanner();
+
+    setTimeout(() => {
+      if (destination.isConnected) destination.focus();
+    }, 0);
+
+    return;
+  }
+
+  // SKU: fill the field without submitting the product.
+  if (!$('editor').open) {
+    closeScanner();
+    return;
+  }
+
+  destination.value = barcode;
+
+  destination.dispatchEvent(
+    new Event('input', { bubbles: true })
+  );
+
+  destination.dispatchEvent(
+    new Event('change', { bubbles: true })
+  );
+
+  closeScanner();
+
+  setTimeout(() => {
+    if (destination.isConnected && $('editor').open) {
+      destination.focus();
+    }
+  }, 0);
+}
   function closeScanner(){
     if(dialog.open)dialog.close();
   }
