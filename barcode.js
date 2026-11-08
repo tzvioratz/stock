@@ -67,13 +67,24 @@
       if(s.cancelled||session!==s||!dialog.open)return;
       const F=window.Html5QrcodeSupportedFormats;
       const formats=[F.EAN_13,F.EAN_8,F.UPC_A,F.UPC_E,F.CODE_128,F.CODE_39,F.CODE_93,F.ITF,F.CODABAR];
-      s.reader=new window.Html5Qrcode('barcodeReader',{formatsToSupport:formats,verbose:false});
+        s.reader = new window.Html5Qrcode('barcodeReader', {
+          verbose: false
+        });
       get('barcodeStatus').textContent='Allow camera access if asked, then aim at the barcode.';
       s.startPromise=s.reader.start(
         {facingMode:'environment'},
-        {fps:10,disableFlip:false},
+            {
+              fps: 8,
+              disableFlip: false,
+              videoConstraints: {
+                facingMode: { ideal: 'environment' },
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
+              }
+            },        
         text=>{
           if(s.cancelled||s.decoded||session!==s||!dialog.open)return;
+          console.info('Stockline decoded barcode:', text);
           const value=String(text).trim();
           if(!value||value.length>80){get('barcodeError').textContent='This barcode is empty or longer than the 80-character SKU limit. Scan another label.';return;}
           s.decoded=true;
@@ -115,6 +126,26 @@
   get('barcodeUse').onclick=()=>{
     const value=get('barcodeValue').value.trim();
     if(!value||value.length>80){get('barcodeError').textContent='Enter a barcode between 1 and 80 characters.';return;}
+    // When opened from Search, use the barcode as a search query.
+if (targetInput === $('search')) {
+  targetInput.value = value;
+
+  // Clear filters so they don't hide the scanned product.
+  $('filter').value = 'all';
+
+  const categoryFilter = document.getElementById('categoryFilter');
+  if (categoryFilter) {
+    categoryFilter.value = '';
+  }
+
+  targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+  closeScanner();
+
+  // Restore focus after the scanner's normal close handler finishes.
+  setTimeout(() => $('search').focus(), 0);
+  return;
+}
     if(!targetInput?.isConnected||!$('editor').open){closeScanner();return;}
     const duplicate=state.items.find(p=>p.ID!==selected?.ID&&String(p.SKU||'').trim().toLowerCase()===value.toLowerCase());
     if(duplicate){get('barcodeError').textContent='That SKU is already used by '+duplicate.Name+'. Scan another item or cancel.';return;}
@@ -139,10 +170,64 @@
     button.onclick=event=>{
       event.preventDefault();targetInput=input;triggerButton=button;
       get('barcodeError').textContent='';get('barcodeRetry').textContent='Restart camera';
-      dialog.showModal();void startCamera();
-    };
+get('barcodeTitle').textContent = 'Scan product barcode';
+get('barcodeUse').textContent = 'Use this barcode';
+
+dialog.showModal();
+void startCamera();    };
     row.append(button);
   };
+  // Add a scanner button beside the inventory search field.
+const searchInput = $('search');
+
+if (searchInput && !document.getElementById('searchBarcodeButton')) {
+  const searchRow = document.createElement('div');
+  searchRow.className = 'sku-scan-row search-scan-row';
+
+  searchInput.parentElement.insertBefore(searchRow, searchInput);
+  searchRow.append(searchInput);
+
+  const searchButton = document.createElement('button');
+  searchButton.id = 'searchBarcodeButton';
+  searchButton.type = 'button';
+  searchButton.className = 'sku-scan-button secondary';
+
+  searchButton.setAttribute('aria-label', 'Scan a barcode to search inventory');
+  searchButton.setAttribute('aria-haspopup', 'dialog');
+  searchButton.setAttribute('aria-controls', 'barcodeDialog');
+
+  searchButton.innerHTML = `
+    <svg
+      viewBox="0 0 24 24"
+      width="21"
+      height="21"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+    >
+      <path d="M4 7V4h3m10 0h3v3M4 17v3h3m10 0h3v-3M7 8v8m3-8v8m3-8v8m4-8v8"/>
+    </svg>
+    <span>Scan</span>
+  `;
+
+  searchButton.onclick = event => {
+    event.preventDefault();
+
+    targetInput = searchInput;
+    triggerButton = searchButton;
+
+    get('barcodeTitle').textContent = 'Scan to search inventory';
+    get('barcodeUse').textContent = 'Search this barcode';
+    get('barcodeError').textContent = '';
+    get('barcodeRetry').textContent = 'Restart camera';
+
+    dialog.showModal();
+    void startCamera();
+  };
+
+  searchRow.append(searchButton);
+}
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&dialog.open)closeScanner();});
   window.addEventListener('pagehide',()=>{if(session)void release(session);});
 })();
