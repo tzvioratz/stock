@@ -1,7 +1,7 @@
 /* Load AFTER script.js and queue.js, as a classic deferred script. */
 'use strict';
 (() => {
-  const defaults=['General','Washing Machine','Dryer','Dishwasher','Other'];
+  const defaults=[];
   const toolbar=$('inventoryView').querySelector('.toolbar');
   const categoryLabel=document.createElement('label');
   categoryLabel.innerHTML='Category<select id="categoryFilter"><option value="">All categories</option></select>';
@@ -10,7 +10,7 @@
   sortLabel.innerHTML=`Sort by<select id="inventorySort"><option value="nameAsc">Name: A–Z</option><option value="nameDesc">Name: Z–A</option><option value="stockUrgent">Stock: out → low → in stock</option><option value="stockHealthy">Stock: in stock → low → out</option><option value="category">Category: A–Z</option></select>`;
   toolbar.append(sortLabel);
   const canonical=value=>{
-    const trimmed=String(value||'').trim()||'General';
+    const trimmed=String(value||'').trim();
     return defaults.find(v=>v.toLowerCase()===trimmed.toLowerCase())||trimmed;
   };
   const categoryOf=p=>canonical(p.Category);
