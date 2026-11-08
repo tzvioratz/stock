@@ -1,0 +1,9 @@
+.text-scan-button{min-height:46px;padding:9px 11px!important;flex-shrink:0;font-size:13px}
+.text-scan-dialog{width:min(650px,calc(100vw - 24px));max-height:92dvh}
+.text-scan-dialog .dialogHeader{align-items:flex-start}
+#textScanCanvas{display:block;width:100%;height:auto;border:1px solid #dce5ef;border-radius:8px;touch-action:none;cursor:crosshair;background:#f2f5f9}
+.text-scan-tools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.text-scan-tools button{font-size:13px}
+#textScanValue{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:17px}
+#textScanStatus{overflow-wrap:anywhere;min-height:20px;margin:12px 0}
+.text-scan-dialog .dialogFooter{flex-wrap:wrap}
+@media(max-width:600px){.text-scan-dialog{padding:18px}.text-scan-button{padding:9px!important}.sku-scan-row{gap:5px}.sku-scan-row>input{min-width:0}}
