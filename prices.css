@@ -1,0 +1,4 @@
+.product-prices{display:flex;flex-wrap:wrap;gap:7px 15px;margin-top:8px;color:#718198;font-size:12px}
+.product-prices b{color:#294263;font-weight:650;margin-left:4px;font-variant-numeric:tabular-nums}
+.price-fields{padding-top:12px;margin-top:10px;border-top:1px solid #e0e7ef}
+.price-fields input{font-variant-numeric:tabular-nums}
