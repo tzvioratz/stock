@@ -202,9 +202,36 @@ function openEditor(action,id) {
   $('editor').showModal(); $('fields').querySelector('input,select,textarea')?.focus();
 }
 function closeEditor() {if(state.busy)return; $('editor').close(); returnFocus?.focus();}
-$('fields').addEventListener('change',e=>{
-  if(mode==='transfer'&&e.target.name==='from') $('fields').querySelector('[name=to]').value=e.target.value==='Home'?'Truck':'Home';
-  if(mode==='adjust'&&e.target.name==='location') $('fields').querySelector('[name=quantity]').value=selected[e.target.value==='Home'?'HomeQty':'TruckQty'];
+$('fields').addEventListener('change', e => {
+  const changed = e.target;
+
+  if (mode === 'transfer') {
+    const from = $('fields').querySelector('select[name="from"]');
+    const to = $('fields').querySelector('select[name="to"]');
+
+    if (!from || !to) return;
+
+    if (changed === from) {
+      to.value = from.value === 'Home' ? 'Truck' : 'Home';
+    } else if (changed === to) {
+      from.value = to.value === 'Home' ? 'Truck' : 'Home';
+    }
+  }
+
+  // Preserve the existing Adjust dialog behavior.
+  if (
+    mode === 'adjust' &&
+    changed.name === 'location' &&
+    selected
+  ) {
+    const quantityInput =
+      $('fields').querySelector('[name="quantity"]');
+
+    if (quantityInput) {
+      quantityInput.value =
+        selected[changed.value === 'Home' ? 'HomeQty' : 'TruckQty'];
+    }
+  }
 });
 async function commit(payload) {
   setBusy(true); $('formError').textContent='';
