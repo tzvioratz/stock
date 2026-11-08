@@ -1,0 +1,12 @@
+/* Load after existing Stockline styles. */
+.sku-scan-row{display:flex;align-items:stretch;gap:8px;margin-top:6px;min-width:0}
+.sku-scan-row>input{min-width:0;flex:1;margin-top:0}
+.sku-scan-button{display:flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;min-width:88px;min-height:46px;padding:9px 12px!important;font-size:13px}
+.sku-scan-button svg{flex-shrink:0}.barcode-dialog{width:min(520px,calc(100vw - 24px));max-height:92dvh}
+.barcode-dialog .dialogHeader{align-items:flex-start}.barcode-dialog .dialogHeader p{margin-top:5px}
+.barcode-status{font-size:13px;color:#5a6f8c;margin-bottom:12px;min-height:20px}
+.barcode-reader{width:100%;min-height:150px;overflow:hidden;border-radius:12px;background:#eef3f9;border:1px solid #dce5ef}
+.barcode-reader video{display:block;width:100%!important;height:auto!important;max-height:45dvh;object-fit:contain}
+#barcodeResult{margin-top:15px}#barcodeValue{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:17px;letter-spacing:.4px}
+.barcode-dialog .dialogFooter{flex-wrap:wrap}.barcode-dialog .dialogFooter button{min-height:46px}
+@media(max-width:600px){.barcode-dialog{padding:18px}.sku-scan-button{min-width:80px;padding:9px!important}.barcode-dialog .dialogFooter{display:grid;grid-template-columns:1fr 1fr}.barcode-dialog #barcodeUse{grid-column:1/-1}}
