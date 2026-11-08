@@ -42,13 +42,13 @@
     filter.innerHTML='<option value="">All categories</option>'+options.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
     filter.value=chosen;
     $('home').textContent=fmt(items.reduce((s,p)=>s+p.HomeQty,0));
-    $('truck').textContent=fmt(items.reduce((s,p)=>s+p.TruckQty,0));
+    $('car').textContent=fmt(items.reduce((s,p)=>s+p.TruckQty,0));
     $('total').textContent=fmt(items.reduce((s,p)=>s+p.HomeQty+p.TruckQty,0));
     $('low').textContent=fmt(items.filter(p=>p.HomeQty+p.TruckQty<=p.ReorderLevel).length);
     const q=$('search').value.trim().toLowerCase(),f=$('filter').value;
     const matches=items.filter(p=>!chosen||categoryOf(p).toLowerCase()===chosen.toLowerCase())
       .filter(p=>[p.Name,p.SKU,p.Notes,categoryOf(p)].join(' ').toLowerCase().includes(q))
-      .filter(p=>f==='all'||f==='home'&&p.HomeQty>0||f==='truck'&&p.TruckQty>0||f==='low'&&p.HomeQty+p.TruckQty<=p.ReorderLevel||f==='out'&&p.HomeQty+p.TruckQty===0);
+      .filter(p=>f==='all'||f==='home'&&p.HomeQty>0||f==='car'&&p.TruckQty>0||f==='low'&&p.HomeQty+p.TruckQty<=p.ReorderLevel||f==='out'&&p.HomeQty+p.TruckQty===0);
     const visible=sortProducts(matches,$('inventorySort').value);
     $('count').textContent='('+visible.length+')';
     $('products').innerHTML=visible.map(p=>{

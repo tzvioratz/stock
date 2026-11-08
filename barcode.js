@@ -147,7 +147,14 @@ async function acceptScan(s, value) {
 
     return;
   }
-
+// In Add Item, an existing scanned SKU opens stock changes.
+if (
+  destination === $('fields').querySelector('input[name="SKU"]') &&
+  typeof window.stocklineUseExistingScannedSKU === 'function' &&
+  window.stocklineUseExistingScannedSKU(barcode, closeScanner)
+) {
+  return;
+}
   // SKU: fill the field without submitting the product.
   if (!$('editor').open) {
     closeScanner();

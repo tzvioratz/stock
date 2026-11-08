@@ -13,13 +13,14 @@
         <script src="queue.js" defer></script>
         <script src="categories.js" defer></script>
         <script src="barcode.js" defer></script>
+        <script src="stock-delta.js" defer></script>
         
     </head>
     <body>
         <header class="topbar">
             <div class="brand">
                 <span class="logo" aria-hidden="true">S</span>
-                <div>Stockline<small>Home & truck inventory</small></div>
+                <div>Stockline<small>Home & car inventory</small></div>
             </div>
             <button id="refresh" class="secondary">Refresh inventory</button>
         </header>
@@ -38,7 +39,7 @@
                     <span>Total units</span><strong id="total">—</strong><small>Across both locations</small>
                 </article>
                 <article><span>At home</span><strong id="home">—</strong><small>Home / Storage</small></article>
-                <article><span>In truck</span><strong id="truck">—</strong><small>Ready for the road</small></article>
+                <article><span>In car</span><strong id="car">—</strong><small>Ready for the road</small></article>
                 <article>
                     <span>Low stock</span><strong id="low">—</strong><small>At or below reorder level</small>
                 </article>
@@ -58,7 +59,7 @@
                         >Filter<select id="filter">
                             <option value="all">All locations</option>
                             <option value="home">Home / Storage</option>
-                            <option value="truck">Truck</option>
+                            <option value="car">Truck</option>
                             <option value="low">Low stock</option>
                             <option value="out">Out of stock</option>
                         </select></label

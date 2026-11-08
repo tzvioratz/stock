@@ -1,4 +1,5 @@
 'use strict';
+'use strict';
 
 window.addEventListener('message', event => {
   if (event.data?.channel !== 'stockline') return;
@@ -166,11 +167,11 @@ function status(p) {const total=p.HomeQty+p.TruckQty; return total===0 ? ['out',
 function render() {
   const items = state.items;
   $('home').textContent = fmt(items.reduce((s,p)=>s+p.HomeQty,0));
-  $('truck').textContent = fmt(items.reduce((s,p)=>s+p.TruckQty,0));
+  $('car').textContent = fmt(items.reduce((s,p)=>s+p.TruckQty,0));
   $('total').textContent = fmt(items.reduce((s,p)=>s+p.HomeQty+p.TruckQty,0));
   $('low').textContent = fmt(items.filter(p=>p.HomeQty+p.TruckQty<=p.ReorderLevel).length);
   const q=$('search').value.trim().toLowerCase(), f=$('filter').value;
-  const visible=items.filter(p=>[p.Name,p.SKU,p.Notes].join(' ').toLowerCase().includes(q)).filter(p=>f==='all'||f==='home'&&p.HomeQty>0||f==='truck'&&p.TruckQty>0||f==='low'&&p.HomeQty+p.TruckQty<=p.ReorderLevel||f==='out'&&p.HomeQty+p.TruckQty===0);
+  const visible=items.filter(p=>[p.Name,p.SKU,p.Notes].join(' ').toLowerCase().includes(q)).filter(p=>f==='all'||f==='home'&&p.HomeQty>0||f==='car'&&p.TruckQty>0||f==='low'&&p.HomeQty+p.TruckQty<=p.ReorderLevel||f==='out'&&p.HomeQty+p.TruckQty===0);
   $('count').textContent = '('+visible.length+')';
   $('products').innerHTML = visible.map(p=>{
     const [cls,label]=status(p);
@@ -191,7 +192,7 @@ function openEditor(action,id) {
   let html = selected ? `<div class="context"><strong>${esc(p.Name)}</strong><br>Home: ${fmt(p.HomeQty)} · Truck: ${fmt(p.TruckQty)}</div>` : '';
   if (action==='addItem'||action==='editItem') {
     html+=input('Product name *','Name',p.Name,'text',true)+input('SKU / item code','SKU',p.SKU)+notes('Description / notes','Notes',p.Notes)+input('Reorder level','ReorderLevel',p.ReorderLevel,'number',true);
-    if(action==='addItem') html+='<div class="pair">'+input('Starting at home','HomeQty',0,'number',true)+input('Starting in truck','TruckQty',0,'number',true)+'</div>';
+    if(action==='addItem') html+='<div class="pair">'+input('Starting at home','HomeQty',0,'number',true)+input('Starting in car','TruckQty',0,'number',true)+'</div>';
   } else if(action==='transfer') {
     const from=p.HomeQty>0?'Home':'Truck';
     html+='<div class="pair">'+locations('from',from)+locations('to',from==='Home'?'Truck':'Home')+'</div>'+input('Quantity to move *','quantity',1,'number',true)+notes('Optional note','note');

@@ -54,8 +54,7 @@
       case 'transfer': return `Move ${p.quantity} × ${name} to ${p.to === 'Truck' ? 'Truck' : 'Home / Storage'}`;
       case 'adjust': return `Set ${name} at ${p.location === 'Truck' ? 'Truck' : 'Home / Storage'} to ${p.quantity}`;
       case 'archiveItem': return `Archive ${name}`;
-      default: return 'Inventory change';
-    }
+      default: return p.queueDescription || 'Inventory change';    }
   }
 
   function renderQueue(announce = false) {
