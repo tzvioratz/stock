@@ -14,7 +14,7 @@ function stocklineOCRText(value){
     <button id="textScanPhoto" type="button" class="secondary">Take / choose photo</button>
     <p id="textScanStatus" role="status" aria-live="polite" class="muted"></p>
     <div id="textScanImageArea" hidden><p class="muted">Drag a rectangle around ONE product number, excluding headings and other text. Or tap Select whole image.</p><canvas id="textScanCanvas" aria-label="Photo preview. Drag to select the product number."></canvas><div class="text-scan-tools"><button type="button" id="textScanWhole" class="secondary">Select whole image</button><button type="button" id="textScanRead">Read selected text</button></div></div>
-    <div id="textScanResult" hidden><label>Recognized product number<input id="textScanValue" type="text" maxlength="70" autocomplete="off" spellcheck="false"></label><p class="muted">Check every character, especially O / 0 and I / 1. You can correct the text before using it.</p></div>
+    <div id="textScanResult" hidden><label>Recognized product number<input id="textScanValue" type="text" maxlength="80" autocomplete="off" spellcheck="false"></label><p class="muted">Check every character, especially O / 0 and I / 1. You can correct the text before using it.</p></div>
     <p id="textScanError" class="error" role="alert"></p>
     <div class="dialogFooter"><button type="button" id="textScanCancel" class="secondary">Cancel</button><button type="button" id="textScanUse" hidden>Use product number</button></div>`;
   document.body.append(dialog);
