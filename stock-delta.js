@@ -136,6 +136,111 @@
       event.stopImmediatePropagation();
     }
   }, true);
+    // Keep product names clickable even when another add-on
+  // redraws the cards with plain <h3> headings.
+  function ensureStockNameButtons() {
+    $('products').querySelectorAll('.product').forEach(card => {
+      const heading = card.querySelector('h3');
+
+      if (!heading) return;
+
+      // Already upgraded: leave it alone.
+      if (heading.querySelector('[data-stock-id]')) return;
+
+      // Avoid replacing any other interactive heading.
+      if (heading.querySelector('button, a, input, select, textarea')) {
+        return;
+      }
+
+      // Existing Move / Adjust / Edit buttons carry the item ID.
+      const actionButton =
+        card.querySelector('[data-action][data-id]');
+
+      if (!actionButton) return;
+
+      const itemId = actionButton.dataset.id;
+      const itemName = heading.textContent.trim();
+
+      if (!itemId || !itemName) return;
+
+      const button = document.createElement('button');
+
+      button.type = 'button';
+      button.className = 'item-stock-button';
+      button.dataset.stockId = itemId;
+      button.textContent = itemName;
+
+      button.setAttribute(
+        'aria-label',
+        'Add or remove inventory for ' + itemName
+      );
+
+      heading.replaceChildren(button);
+    });
+  }
+
+  const stockNameObserver =
+    new MutationObserver(ensureStockNameButtons);
+
+  stockNameObserver.observe($('products'), {
+    childList: true,
+    subtree: true
+  });
+
+  // Upgrade any cards already displayed.
+  ensureStockNameButtons();
+    // Clicking an inventory item's name opens its stock-change dialog.
+  $('products').addEventListener('click', event => {
+    const button = event.target.closest('[data-stock-id]');
+
+    if (!button || !$('products').contains(button)) return;
+
+    if (!state.live || state.busy) {
+      notify(
+        'Wait for the live inventory connection/read, then try again.',
+        true
+      );
+      return;
+    }
+
+    if (dialog.open) return;
+
+    const item = state.items.find(
+      p => String(p.ID) === button.dataset.stockId
+    );
+
+    if (!item) {
+      notify('This item is no longer loaded. Refresh inventory.', true);
+      return;
+    }
+
+    // Use the exact item ID, not its SKU.
+    // This also works for items without a SKU.
+    matches = [item];
+    returnFocus = button;
+
+    get('stockDeltaForm').reset();
+    get('stockDeltaError').textContent = '';
+
+    get('stockDeltaChoiceLabel').hidden = true;
+
+    get('stockDeltaChoice').innerHTML =
+      '<option value="' + esc(item.ID) + '">' +
+      esc(item.Name) +
+      '</option>';
+
+    get('stockDeltaChoice').value = String(item.ID);
+
+    selectProduct();
+    dialog.showModal();
+
+    setTimeout(() => {
+      if (dialog.open) {
+        get('stockDeltaHome').focus();
+        get('stockDeltaHome').select();
+      }
+    }, 0);
+  });
   get('stockDeltaChoice').onchange=selectProduct;
   get('stockDeltaHome').oninput=preview;get('stockDeltaTruck').oninput=preview;
   function cancel(){dialog.close();}
