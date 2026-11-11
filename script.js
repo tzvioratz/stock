@@ -171,7 +171,7 @@ function render() {
   $('total').textContent = fmt(items.reduce((s,p)=>s+p.HomeQty+p.TruckQty,0));
   $('low').textContent = fmt(items.filter(p=>p.HomeQty+p.TruckQty<=p.ReorderLevel).length);
   const q=$('search').value.trim().toLowerCase(), f=$('filter').value;
-  const visible=items.filter(p=>[p.Name,p.SKU,p.Notes].join(' ').toLowerCase().includes(q)).filter(p=>f==='all'||f==='home'&&p.HomeQty>0||f==='car'&&p.TruckQty>0||f==='low'&&p.HomeQty+p.TruckQty<=p.ReorderLevel||f==='out'&&p.HomeQty+p.TruckQty===0);
+  const visible=items.filter(p=>[p.Name,p.PartNumber,p.SKU,p.Notes].join(' ').toLowerCase().includes(q)).filter(p=>f==='all'||f==='home'&&p.HomeQty>0||f==='car'&&p.TruckQty>0||f==='low'&&p.HomeQty+p.TruckQty<=p.ReorderLevel||f==='out'&&p.HomeQty+p.TruckQty===0);
   $('count').textContent = '('+visible.length+')';
   $('products').innerHTML = visible.map(p=>{
     const [cls,label]=status(p);
@@ -183,7 +183,7 @@ function render() {
     aria-label="Add or remove inventory for ${esc(p.Name)}"
   >${esc(p.Name)}</button>
 </h3>
-<p class="muted">${esc(p.SKU || 'No SKU')}</p>${p.Notes ? `<p class="muted">${esc(p.Notes)}</p>`:''}</div><div class="quantities"><div><span>HOME</span><b>${fmt(p.HomeQty)}</b></div><div><span>CAR</span><b>${fmt(p.TruckQty)}</b></div><div><span>TOTAL</span><b>${fmt(p.HomeQty+p.TruckQty)}</b></div></div><span class="badge ${cls}">${label}</span><div class="actions">${[['transfer','Move'],['adjust','Adjust'],['editItem','Edit']].map(([a,l])=>`<button class="secondary" data-action="${a}" data-id="${esc(p.ID)}" aria-label="${l} ${esc(p.Name)}" ${!state.live||state.busy?'disabled':''}>${l}</button>`).join('')}</div></article>`;
+<p class="muted">${esc(p.PartNumber || 'No part number')}</p>${p.Notes ? `<p class="muted">${esc(p.Notes)}</p>`:''}</div><div class="quantities"><div><span>HOME</span><b>${fmt(p.HomeQty)}</b></div><div><span>CAR</span><b>${fmt(p.TruckQty)}</b></div><div><span>TOTAL</span><b>${fmt(p.HomeQty+p.TruckQty)}</b></div></div><span class="badge ${cls}">${label}</span><div class="actions">${[['transfer','Move'],['adjust','Adjust'],['editItem','Edit']].map(([a,l])=>`<button class="secondary" data-action="${a}" data-id="${esc(p.ID)}" aria-label="${l} ${esc(p.Name)}" ${!state.live||state.busy?'disabled':''}>${l}</button>`).join('')}</div></article>`;
   }).join('') || `<p class="empty">${items.length ? 'No products match your search or filter.' : 'Your inventory is empty. Add your first item to get started.'}</p>`;
 }
 function input(label,name,value='',type='text',required=false) {

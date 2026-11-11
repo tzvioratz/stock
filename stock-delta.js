@@ -30,7 +30,7 @@
   }
   function selectProduct(){
     product=matches.find(p=>String(p.ID)===get('stockDeltaChoice').value)||matches[0];
-    get('stockDeltaProduct').innerHTML='<strong>'+esc(product.Name)+'</strong><br>SKU: '+esc(product.SKU)+'<br>Currently confirmed: Home '+fmt(product.HomeQty)+' · Truck '+fmt(product.TruckQty);
+    get('stockDeltaProduct').innerHTML='<strong>'+esc(product.Name)+'</strong><br>Part number: '+esc(product.PartNumber || 'Not set')+'<br>Currently confirmed: Home '+fmt(product.HomeQty)+' · Truck '+fmt(product.TruckQty);
     preview();
   }
   window.stocklineUseExistingScannedSKU=function(value,closeScanner){

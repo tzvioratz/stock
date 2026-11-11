@@ -1,0 +1,2 @@
+/* Hide only the Add Item SKU value, not its Scan/Text buttons or form data. */
+#fields.part-number-add-mode input.part-number-hidden-sku { display: none; }
